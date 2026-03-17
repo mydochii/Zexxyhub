@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Viral Terbaru</title>
+
+<style>
+body{
+margin:0;
+background:#0f0f0f;
+font-family:Arial;
+color:white;
+}
+header{
+text-align:center;
+padding:15px;
+background:#1a1a1a;
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+gap:10px;
+padding:10px;
+}
+.card{
+background:#1a1a1a;
+border-radius:8px;
+overflow:hidden;
+cursor:pointer;
+}
+.card video{
+width:100%;
+height:120px;
+object-fit:cover;
+}
+.title{
+font-size:13px;
+padding:8px;
+text-align:center;
+}
+.player{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+.player video{
+width:95%;
+max-width:800px;
+}
+.close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:28px;
+cursor:pointer;
+}
+.pagination{
+text-align:center;
+padding:20px;
+}
+button{
+padding:10px 20px;
+border:none;
+border-radius:20px;
+margin:5px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Video Viral Terbaru</h2>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<div class="pagination">
+<button onclick="prevPage()">Prev</button>
+<button onclick="nextPage()">Next</button>
+</div>
+
+<div class="player" id="player">
+<span class="close" onclick="closePlayer()">✕</span>
+<video id="mainVideo" controls autoplay playsinline></video>
+</div>
+
+<script>
+
+const ads=["https://otieu.com/4/10005133"];
+
+function openAd(){
+let ad=ads[Math.floor(Math.random()*ads.length)];
+window.open(ad,"_blank");
+}
+
+const videoList2=[
+"https://cdn.videy.co/S6UdKi0Z1.mp4",
+"https://cdn.videy.co/IOTwlS3e1.mp4",
+"https://cdn.videy.co/09iPmunt1.mp4",
+"https://cdn.videy.co/eVIcEn6j1.mp4",
+"https://cdn.videy.co/4xl7VuFF1.mp4",
+"https://cdn.videy.co/WNuQaaIx1.mp4",
+"https://cdn.videy.co/h8ZJQiGm1.mp4",
+"https://cdn.videy.co/WIlTcDEd1.mp4",
+"https://cdn.videy.co/QqnOBMC61.mp4",
+"https://cdn.videy.co/7ukDcDfk1.mp4",
+"https://cdn.videy.co/tFgz61QQ1.mp4",
+"https://cdn.videy.co/6tAndVLx1.mp4",
+"https://cdn.videy.co/HBZVs24c1.mp4",
+"https://cdn.videy.co/EK7EJBYG1.mp4",
+"https://cdn.videy.co/GWKfLi201.mp4",
+"https://cdn.videy.co/sVvh3m3T1.mp4",
+"https://cdn.videy.co/lIWiiz8i1.mp4",
+"https://cdn.videy.co/2lxv62jZ1.mp4",
+"https://cdn.videy.co/jT1GdSQ41.mp4",
+"https://cdn.videy.co/AthVqXtm1.mp4",
+"https://cdn.videy.co/okf7jRae1.mp4",
+"https://cdn.videy.co/hBULetbc1.mp4",
+"https://cdn.videy.co/qnQYG8rl1.mp4",
+"https://cdn.videy.co/VMT2SZ6g1.mp4",
+"https://cdn.videy.co/8b23af1b1.mp4",
+"https://cdn.videy.co/fS0lMUkB1.mp4",
+"https://cdn.videy.co/x62OOeiD1.mp4",
+"https://cdn.videy.co/yIWu4OLa1.mp4",
+"https://cdn.videy.co/o3twkHUr1.mp4",
+"https://cdn.videy.co/Lnph2Zn71.mp4",
+"https://cdn.videy.co/NYqMjoG91.mp4"
+];
+
+// random
+videoList.sort(()=>Math.random()-0.5);
+
+let page=1;
+const perPage=8;
+
+function renderVideos(){
+
+const grid=document.getElementById("grid");
+grid.innerHTML="";
+
+let start=(page-1)*perPage;
+let end=start+perPage;
+
+videoList.slice(start,end).forEach(v=>{
+
+let card=document.createElement("div");
+card.className="card";
+
+card.innerHTML=`
+<video src="${v}" muted preload="metadata" playsinline></video>
+<div class="title">Video</div>
+`;
+
+card.onclick=()=>{
+
+const video=document.getElementById("mainVideo");
+
+video.src=v;
+
+document.getElementById("player").style.display="flex";
+
+openAd();
+
+video.dataset.adShown=false;
+
+video.ontimeupdate=function(){
+if(video.currentTime>20 && video.dataset.adShown=="false"){
+video.dataset.adShown=true;
+openAd();
+}
+};
+
+};
+
+grid.appendChild(card);
+
+});
+
+}
+
+function nextPage(){
+if(page*perPage<videoList.length){
+page++;
+openAd();
+renderVideos();
+}
+}
+
+function prevPage(){
+if(page>1){
+page--;
+openAd();
+renderVideos();
+}
+}
+
+function closePlayer(){
+document.getElementById("player").style.display="none";
+document.getElementById("mainVideo").pause();
+}
+
+renderVideos();
+
+</script>
+
+</body>
+</html>
